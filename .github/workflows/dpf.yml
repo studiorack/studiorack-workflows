@@ -1,4 +1,4 @@
-name: JUCE workflow
+name: DPF workflow
 
 defaults:
   run:
@@ -31,8 +31,8 @@ on:
         type: string
 
 jobs:
-  juce:
-    name: JUCE
+  dpf:
+    name: DPF
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -41,15 +41,15 @@ jobs:
           - os: ubuntu-latest
             name: linux
             generator: Unix Makefiles
-            path: ${{ inputs.dir_build }}/VST3/${{ inputs.type }}
+            path: ${{ inputs.dir_build }}/bin
           - os: macos-latest
             name: mac
             generator: Xcode
-            path: ${{ inputs.dir_build }}/VST3/${{ inputs.type }}
+            path: ${{ inputs.dir_build }}/bin
           - os: windows-latest
             name: win
             generator: Visual Studio 16 2019
-            path: ${{ inputs.dir_build }}/VST3/${{ inputs.type }}
+            path: ${{ inputs.dir_build }}/bin
     steps:
       - name: Install Linux dependencies
         if: matrix.os == 'ubuntu-latest'
@@ -57,7 +57,7 @@ jobs:
 
       - name: Install macOS dependencies
         if: matrix.os == 'macos-latest'
-        run: brew install cmake
+        run: brew install cmake liblo
 
       - name: Install Windows dependencies
         if: matrix.os == 'windows-latest'
@@ -71,8 +71,6 @@ jobs:
           cmake \
             -G "${{ matrix.generator }}" \
             -DCMAKE_BUILD_TYPE="${{ inputs.type }}" \
-            -DJUCE_BUILD_EXAMPLES=ON \
-            -DJUCE_BUILD_EXTRAS=OFF \
             -S "${{ inputs.dir_source }}" \
             -B "${{ inputs.dir_build }}"
           cmake --build "${{ inputs.dir_build }}" --config "${{ inputs.type }}" --target "${{ inputs.target }}"
