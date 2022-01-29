@@ -59,6 +59,7 @@ jobs:
 
 Update this line to point to the template you would like to use:
 
+    studiorack/studiorack-workflows/.github/workflows/dpf.yml@main
     studiorack/studiorack-workflows/.github/workflows/dplug.yml@main
     studiorack/studiorack-workflows/.github/workflows/iplug.yml@main
     studiorack/studiorack-workflows/.github/workflows/juce.yml@main
