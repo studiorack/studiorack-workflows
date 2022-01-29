@@ -1,0 +1,97 @@
+name: SFZ workflow
+
+defaults:
+  run:
+    shell: bash
+
+on:
+  workflow_call:
+    inputs:
+      release_id:
+        required: true
+        type: string
+      release_url:
+        required: true
+        type: string
+      audio_ext:
+        default: flac
+        required: false
+        type: string
+      image_ext:
+        default: jpg
+        required: false
+        type: string
+
+jobs:
+  sfz:
+    name: SFZ
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Upload metadata
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ inputs.release_url }}
+          asset_path: ./plugins.json
+          asset_name: plugins.json
+          asset_content_type: application/json
+
+      - name: Upload audio preview
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ inputs.release_url }}
+          asset_path: ./${{ github.event.repository.name }}.${{ inputs.audio_ext }}
+          asset_name: ${{ github.event.repository.name }}.${{ inputs.audio_ext }}
+          asset_content_type: audio/${{ inputs.audio_ext }}
+
+      - name: Upload image preview
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ inputs.release_url }}
+          asset_path: ./${{ github.event.repository.name }}.${{ inputs.image_ext }}
+          asset_name: ${{ github.event.repository.name }}.${{ inputs.image_ext }}
+          asset_content_type: image/${{ inputs.image_ext }}
+
+      - name: Compress lossless version
+        run: zip -r ./${{ github.event.repository.name }}.zip *
+
+      - name: Upload lossless version
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ inputs.release_url }}
+          asset_path: ./${{ github.event.repository.name }}.zip
+          asset_name: ${{ github.event.repository.name }}.zip
+          asset_content_type: application/zip
+
+      - name: Install ffmpeg
+        uses: FedericoCarboni/setup-ffmpeg@v1
+
+      - name: Create lossy version
+        run: |
+          for i in ./Samples/*.${{ inputs.audio_ext }}; do ffmpeg -i "$i" -b:a 128k "${i%.*}.ogg"; done
+          sed -i 's/${{ inputs.audio_ext }}/ogg/g' '${{ github.event.repository.name }}.sfz'
+          find . -name "*.${{ inputs.audio_ext }}" -type f -delete
+          rm ${{ github.event.repository.name }}.zip
+
+      - name: Compress lossy version
+        run: zip -r ./${{ github.event.repository.name }}-lossy.zip *
+
+      - name: Upload lossy version
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ inputs.release_url }}
+          asset_path: ./${{ github.event.repository.name }}-lossy.zip
+          asset_name: ${{ github.event.repository.name }}-lossy.zip
+          asset_content_type: application/zip
