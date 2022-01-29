@@ -27,7 +27,7 @@ jobs:
   build_release:
     name: Build release
     needs: create_release
-    uses: kmturley/actions-script-example/.github/workflows/steinberg.yml@main
+    uses: studiorack/studiorack-workflows/.github/workflows/steinberg.yml@main
     with:
       release_id: ${{ needs.create_release.outputs.id }}
       release_url: ${{ needs.create_release.outputs.upload_url }}
