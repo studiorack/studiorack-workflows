@@ -1,4 +1,4 @@
-name: Plugin
+name: Release
 
 on:
   workflow_dispatch:
@@ -11,7 +11,7 @@ jobs:
     name: Create release
     runs-on: ubuntu-latest
     outputs:
-      id: ${{ steps.draft_release.outputs.id }}
+      upload_id: ${{ steps.draft_release.outputs.id }}
       upload_url: ${{ steps.draft_release.outputs.upload_url }}
     steps:
       - name: Draft release
@@ -29,7 +29,7 @@ jobs:
     needs: create_release
     uses: studiorack/studiorack-workflows/.github/workflows/steinberg.yml@main
     with:
-      release_id: ${{ needs.create_release.outputs.id }}
+      release_id: ${{ needs.create_release.outputs.upload_id }}
       release_url: ${{ needs.create_release.outputs.upload_url }}
 
   publish_release:
@@ -41,4 +41,4 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        release_id: ${{ needs.create_release.outputs.id }}
+        release_id: ${{ needs.create_release.outputs.upload_id }}
