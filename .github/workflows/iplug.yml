@@ -41,15 +41,15 @@ jobs:
           - os: ubuntu-latest
             name: linux
             generator: Unix Makefiles
-            path: ${{ inputs.dir_build }}/VST3/${{ inputs.type }}
+            path: ${{ inputs.dir_build }}
           - os: macos-latest
             name: mac
             generator: Xcode
-            path: ${{ inputs.dir_build }}/VST3/${{ inputs.type }}
+            path: ${{ inputs.dir_build }}/${{ inputs.type }}
           - os: windows-latest
             name: win
             generator: Visual Studio 16 2019
-            path: ${{ inputs.dir_build }}/VST3/${{ inputs.type }}
+            path: ${{ inputs.dir_build }}
     steps:
       - name: Install Linux dependencies
         if: matrix.os == 'ubuntu-latest'
@@ -67,6 +67,15 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: true
+
+      - name: Setup
+        shell: bash
+        run: |
+          cp -v -r ./src/Examples/* ${{ inputs.dir_source }}/Examples
+          cp -v ./src/download-iplug-sdks.sh ${{ inputs.dir_source }}/Dependencies/IPlug
+          cp -v ${{ inputs.dir_source }}/Examples/IPlugInstrument/resources/fonts/Roboto-Regular.ttf ${{ inputs.dir_source }}/Examples/IPlugInstrument/resources
+          cd ${{ inputs.dir_source }}/Dependencies/IPlug &&  ./download-iplug-sdks.sh && cd ../../..
+          cd ${{ inputs.dir_source }}/Dependencies &&  ./download-prebuilt-libs.sh && cd ../..
 
       - name: Build plugins
         run: |
