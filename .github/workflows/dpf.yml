@@ -53,7 +53,7 @@ jobs:
     steps:
       - name: Install Linux dependencies
         if: matrix.os == 'ubuntu-latest'
-        run: sudo apt-get update && sudo apt-get install cmake gcc "libstdc++6" libx11-xcb-dev libxcb-util-dev libxcb-cursor-dev libxcb-xkb-dev libxkbcommon-dev libxkbcommon-x11-dev libfontconfig1-dev libcairo2-dev libgtkmm-3.0-dev libsqlite3-dev libxcb-keysyms1-dev libasound2-dev
+        run: sudo apt-get update && sudo apt-get install cmake gcc "libstdc++6" libx11-xcb-dev libxcb-util-dev libxcb-cursor-dev libxcb-xkb-dev libxkbcommon-dev libxkbcommon-x11-dev libfontconfig1-dev libcairo2-dev libgtkmm-3.0-dev libsqlite3-dev libxcb-keysyms1-dev libasound2-dev liblo-dev
 
       - name: Install macOS dependencies
         if: matrix.os == 'macos-latest'
@@ -75,7 +75,7 @@ jobs:
             -DCMAKE_BUILD_TYPE="${{ inputs.type }}" \
             -S "${{ inputs.dir_source }}" \
             -B "${{ inputs.dir_build }}"
-          cmake --build "${{ inputs.dir_build }}" --config "${{ inputs.type }}" --target "${{ inputs.target }}"
+          cmake --build "${{ inputs.dir_build }}" --config "${{ inputs.type }}"
 
       - name: List files
         run: ls ${{ matrix.path }}
