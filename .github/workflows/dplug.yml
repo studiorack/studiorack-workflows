@@ -67,10 +67,10 @@ jobs:
       - name: Build plugins
         run: |
           export LDC_VSDIR="$(pwd)/LDC_VSDIR"
-          cd ./dplugsdk/tools/dplug-build
+          cd ${{ inputs.dir_source }}/tools/dplug-build
           dub build
           cd ../../../
-          cd ./dplugsdk/examples/clipit
+          cd ${{ inputs.dir_source }}/examples/clipit
           ../../tools/dplug-build/dplug-build -c VST3 -a x86_64
           cd ../../../
           mv "${{ matrix.path }}/${{ matrix.file }}" "${{ matrix.path }}/witty-audio-clip-it.vst3"
