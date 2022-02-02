@@ -41,15 +41,15 @@ jobs:
           - os: ubuntu-latest
             name: linux
             generator: Unix Makefiles
-            path: ${{ inputs.dir_build }}/VST3/${{ inputs.type }}
+            path: ${{ inputs.dir_build }}/examples/CMake/AudioPlugin/AudioPluginExample_artefacts/${{ inputs.type }}/VST3
           - os: macos-latest
             name: mac
             generator: Xcode
-            path: ${{ inputs.dir_build }}/VST3/${{ inputs.type }}
+            path: ${{ inputs.dir_build }}/examples/CMake/AudioPlugin/AudioPluginExample_artefacts/${{ inputs.type }}/VST3
           - os: windows-latest
             name: win
             generator: Visual Studio 16 2019
-            path: ${{ inputs.dir_build }}/VST3/${{ inputs.type }}
+            path: ${{ inputs.dir_build }}/examples/CMake/AudioPlugin/AudioPluginExample_artefacts/${{ inputs.type }}/VST3/Audio Plugin Example.vst3/Contents/x86_64-win
     steps:
       - name: Install Linux dependencies
         if: matrix.os == 'ubuntu-latest'
