@@ -7,6 +7,10 @@ defaults:
 on:
   workflow_call:
     inputs:
+      dir_source:
+        default: ./Samples
+        required: false
+        type: string
       release_id:
         required: true
         type: string
@@ -15,6 +19,14 @@ on:
         type: string
       audio_ext:
         default: flac
+        required: false
+        type: string
+      audio_ext_lossy:
+        default: ogg
+        required: false
+        type: string
+      audio_bitrate:
+        default: 128k
         required: false
         type: string
       image_ext:
@@ -80,8 +92,8 @@ jobs:
 
       - name: Create lossy version
         run: |
-          for i in ./Samples/*.${{ inputs.audio_ext }}; do ffmpeg -i "$i" -b:a 128k "${i%.*}.ogg"; done
-          sed -i 's/${{ inputs.audio_ext }}/ogg/g' '${{ github.event.repository.name }}.sfz'
+          for i in ./${{ inputs.dir_source }}/*.${{ inputs.audio_ext }}; do ffmpeg -i "$i" -b:a ${{ inputs.audio_bitrate }} "${i%.*}.${{ inputs.audio_ext_lossy }}"; done
+          sed -i 's/${{ inputs.audio_ext }}/${{ inputs.audio_ext_lossy }}/g' '${{ github.event.repository.name }}.sfz'
           find . -name "*.${{ inputs.audio_ext }}" -type f -delete
           rm ${{ github.event.repository.name }}.zip
 
