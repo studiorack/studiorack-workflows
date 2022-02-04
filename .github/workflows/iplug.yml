@@ -71,9 +71,7 @@ jobs:
       - name: Setup
         shell: bash
         run: |
-          cp -v -r ./src/Examples/* ${{ inputs.dir_source }}/Examples
           cp -v ./src/download-iplug-sdks.sh ${{ inputs.dir_source }}/Dependencies/IPlug
-          cp -v ${{ inputs.dir_source }}/Examples/IPlugInstrument/resources/fonts/Roboto-Regular.ttf ${{ inputs.dir_source }}/Examples/IPlugInstrument/resources
           cd ${{ inputs.dir_source }}/Dependencies/IPlug &&  ./download-iplug-sdks.sh && cd ../../..
           cd ${{ inputs.dir_source }}/Dependencies &&  ./download-prebuilt-libs.sh && cd ../..
 
