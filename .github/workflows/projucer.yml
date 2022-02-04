@@ -104,7 +104,7 @@ jobs:
         run: msbuild.exe -v:normal ${{ inputs.file_name }}.sln
 
       - name: List files
-        run: ls ${{ matrix.path }}
+        run: ls "${{ matrix.path }}"
 
       - name: Metadata
         run: |

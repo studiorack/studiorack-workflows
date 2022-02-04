@@ -74,7 +74,7 @@ jobs:
           ../../tools/dplug-build/dplug-build -c VST3 -a x86_64
 
       - name: List files
-        run: ls ${{ matrix.path }}
+        run: ls "${{ matrix.path }}"
 
       - name: Metadata
         run: |

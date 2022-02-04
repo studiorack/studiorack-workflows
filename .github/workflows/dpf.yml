@@ -78,7 +78,7 @@ jobs:
           cmake --build "${{ inputs.dir_build }}" --config "${{ inputs.type }}"
 
       - name: List files
-        run: ls ${{ matrix.path }}
+        run: ls "${{ matrix.path }}"
 
       - name: Metadata
         run: |
