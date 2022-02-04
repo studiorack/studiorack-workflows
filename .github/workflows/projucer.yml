@@ -12,7 +12,7 @@ on:
         required: false
         type: string
       dir_source:
-        default: ./sdk
+        default: ./src/AudioPluginDemo/Builds
         required: false
         type: string
       release_id:
@@ -41,22 +41,19 @@ jobs:
           - os: ubuntu-latest
             name: linux
             generator: Unix Makefiles
-            source: ./src/AudioPluginDemo/Builds/LinuxMakefile
-            path: ./src/AudioPluginDemo/Builds/LinuxMakefile/build
+            path: ${{ inputs.dir_source }}/LinuxMakefile/build
             projucer_bin: ./JUCE/Projucer
             projucer_type: linux
           - os: macos-latest
             name: mac
             generator: Xcode
-            source: ./src/AudioPluginDemo/Builds/MacOSX
-            path: ./src/AudioPluginDemo/Builds/MacOSX/build/Release
+            path: ${{ inputs.dir_source }}/MacOSX/build/Release
             projucer_bin: ./JUCE/Projucer.app/Contents/MacOS/Projucer
             projucer_type: osx
           - os: windows-latest
             name: win
             generator: Visual Studio 16 2019
-            source: ./src/AudioPluginDemo/Builds/VisualStudio2017
-            path: ./src/AudioPluginDemo/Builds/VisualStudio2017/x64/Debug/VST3
+            path: ${{ inputs.dir_source }}/VisualStudio2017/x64/Debug/VST3
             projucer_bin: ./JUCE/Projucer.exe
             projucer_type: windows
     steps:
@@ -86,17 +83,17 @@ jobs:
 
       - name: Build Linux plugin (Projucer)
         if: matrix.os == 'ubuntu-latest'
-        working-directory: ${{ matrix.dir_source }}
+        working-directory: ${{ inputs.dir_source }}
         run: make -j4 VERBOSE=1 CONFIG="${{ inputs.type }}"
 
       - name: Build macOS plugin (Projucer)
         if: matrix.os == 'macos-latest'
-        working-directory: ${{ matrix.dir_source }}
+        working-directory: ${{ inputs.dir_source }}
         run: xcodebuild ARCHS=x86_64 -project AudioPluginDemo.xcodeproj -configuration "${{ inputs.type }}" -jobs 4
 
       - name: Build Windows plugin (Projucer)
         if: matrix.os == 'windows-latest'
-        working-directory: ${{ matrix.dir_source }}
+        working-directory: ${{ inputs.dir_source }}
         run: msbuild.exe -v:normal AudioPluginDemo.sln
 
       - name: List files
