@@ -83,17 +83,17 @@ jobs:
 
       - name: Build Linux plugin (Projucer)
         if: matrix.os == 'ubuntu-latest'
-        working-directory: ${{ inputs.dir_source }}
+        working-directory: ${{ inputs.dir_source }}/LinuxMakefile
         run: make -j4 VERBOSE=1 CONFIG="${{ inputs.type }}"
 
       - name: Build macOS plugin (Projucer)
         if: matrix.os == 'macos-latest'
-        working-directory: ${{ inputs.dir_source }}
+        working-directory: ${{ inputs.dir_source }}/MacOSX
         run: xcodebuild ARCHS=x86_64 -project AudioPluginDemo.xcodeproj -configuration "${{ inputs.type }}" -jobs 4
 
       - name: Build Windows plugin (Projucer)
         if: matrix.os == 'windows-latest'
-        working-directory: ${{ inputs.dir_source }}
+        working-directory: ${{ inputs.dir_source }}/VisualStudio2017
         run: msbuild.exe -v:normal AudioPluginDemo.sln
 
       - name: List files
