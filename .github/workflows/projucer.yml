@@ -12,7 +12,11 @@ on:
         required: false
         type: string
       dir_source:
-        default: ./src/AudioPluginDemo/Builds
+        default: ./src/AudioPluginDemo
+        required: false
+        type: string
+      file_name:
+        default: AudioPluginDemo
         required: false
         type: string
       release_id:
@@ -41,19 +45,22 @@ jobs:
           - os: ubuntu-latest
             name: linux
             generator: Unix Makefiles
-            path: ${{ inputs.dir_source }}/LinuxMakefile/build
+            source: ${{ inputs.dir_source }}/Builds/LinuxMakefile
+            path: ${{ inputs.dir_source }}/Builds/LinuxMakefile/build
             projucer_bin: ./JUCE/Projucer
             projucer_type: linux
           - os: macos-latest
             name: mac
             generator: Xcode
-            path: ${{ inputs.dir_source }}/MacOSX/build/Release
+            source: ${{ inputs.dir_source }}/Builds/MacOSX
+            path: ${{ inputs.dir_source }}/Builds/MacOSX/build/Release
             projucer_bin: ./JUCE/Projucer.app/Contents/MacOS/Projucer
             projucer_type: osx
           - os: windows-latest
             name: win
             generator: Visual Studio 16 2019
-            path: ${{ inputs.dir_source }}/VisualStudio2017/x64/Debug/VST3
+            source: ${{ inputs.dir_source }}/Builds/VisualStudio2017
+            path: ${{ inputs.dir_source }}/Builds/VisualStudio2017/x64/Debug/VST3
             projucer_bin: ./JUCE/Projucer.exe
             projucer_type: windows
     steps:
@@ -79,22 +86,22 @@ jobs:
           curl -L https://github.com/juce-framework/JUCE/releases/download/6.0.8/juce-6.0.8-${{ matrix.projucer_type }}.zip --output jucesdk.zip
           unzip jucesdk.zip
           ${{ matrix.projucer_bin }} --set-global-search-path ${{ matrix.projucer_type }} defaultJuceModulePath ./JUCE/modules
-          ${{ matrix.projucer_bin }} --resave ./src/AudioPluginDemo/AudioPluginDemo.jucer
+          ${{ matrix.projucer_bin }} --resave "${{ inputs.dir_source }}/${{ inputs.file_name }}.jucer"
 
       - name: Build Linux plugin (Projucer)
         if: matrix.os == 'ubuntu-latest'
-        working-directory: ${{ inputs.dir_source }}/LinuxMakefile
+        working-directory: ${{ matrix.source }}
         run: make -j4 VERBOSE=1 CONFIG="${{ inputs.type }}"
 
       - name: Build macOS plugin (Projucer)
         if: matrix.os == 'macos-latest'
-        working-directory: ${{ inputs.dir_source }}/MacOSX
-        run: xcodebuild ARCHS=x86_64 -project AudioPluginDemo.xcodeproj -configuration "${{ inputs.type }}" -jobs 4
+        working-directory: ${{ matrix.source }}
+        run: xcodebuild ARCHS=x86_64 -project ${{ inputs.file_name }}.xcodeproj -configuration "${{ inputs.type }}" -jobs 4
 
       - name: Build Windows plugin (Projucer)
         if: matrix.os == 'windows-latest'
-        working-directory: ${{ inputs.dir_source }}/VisualStudio2017
-        run: msbuild.exe -v:normal AudioPluginDemo.sln
+        working-directory: ${{ matrix.source }}
+        run: msbuild.exe -v:normal ${{ inputs.file_name }}.sln
 
       - name: List files
         run: ls ${{ matrix.path }}
