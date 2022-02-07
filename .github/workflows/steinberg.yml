@@ -26,7 +26,7 @@ on:
         required: true
         type: string
       target:
-        default: all
+        default: adelay
         required: false
         type: string
       type:
