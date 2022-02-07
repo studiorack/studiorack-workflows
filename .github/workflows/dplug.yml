@@ -11,8 +11,12 @@ on:
         default: ./build
         required: false
         type: string
-      dir_source:
+      dir_sdk:
         default: ./sdk
+        required: false
+        type: string
+      dir_source:
+        default: ./sdk/examples/clipit
         required: false
         type: string
       release_id:
@@ -22,7 +26,7 @@ on:
         required: true
         type: string
       target:
-        default: all
+        default: VST3
         required: false
         type: string
       type:
@@ -41,17 +45,17 @@ jobs:
           - os: ubuntu-latest
             name: linux
             generator: Unix Makefiles
-            path: ${{ inputs.dir_build }}/examples/clipit/builds/Linux-64b-VST3
+            path: ${{ inputs.dir_source }}/builds/Linux-64b-VST3
             file: Witty Audio CLIP It.vst3
           - os: macos-latest
             name: mac
             generator: Xcode
-            path: ${{ inputs.dir_build }}/examples/clipit/builds/macOS-64b-VST3
+            path: ${{ inputs.dir_source }}/builds/macOS-64b-VST3
             file: Witty Audio CLIP It.vst3
           - os: windows-latest
             name: win
             generator: Visual Studio 16 2019
-            path: ${{ inputs.dir_build }}/examples/clipit/builds/Windows-64b-VST3
+            path: ${{ inputs.dir_source }}/builds/Windows-64b-VST3
             file: Witty Audio CLIP It-64.vst3
     steps:
       - name: Install D compiler
@@ -70,8 +74,8 @@ jobs:
           cd ${{ inputs.dir_source }}/tools/dplug-build
           dub build
           cd ../../../
-          cd ${{ inputs.dir_source }}/examples/clipit
-          ../../tools/dplug-build/dplug-build -c VST3 -a x86_64
+          cd ${{ inputs.dir_source }}
+          ../../tools/dplug-build/dplug-build -c ${{ inputs.target }} -a x86_64
 
       - name: List files
         run: ls "${{ matrix.path }}"
