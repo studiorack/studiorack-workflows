@@ -11,12 +11,12 @@ on:
         default: ./build
         required: false
         type: string
-      dir_source:
-        default: ./sdk/Examples/IPlugInstrument
-        required: false
-        type: string
       dir_sdk:
         default: ./sdk
+        required: false
+        type: string
+      dir_source:
+        default: ./sdk/Examples/IPlugInstrument
         required: false
         type: string
       release_id:

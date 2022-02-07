@@ -71,7 +71,7 @@ jobs:
       - name: Build plugins
         run: |
           export LDC_VSDIR="$(pwd)/LDC_VSDIR"
-          cd ${{ inputs.dir_source }}/tools/dplug-build
+          cd ${{ inputs.dir_sdk }}/tools/dplug-build
           dub build
           cd ../../../
           cd ${{ inputs.dir_source }}

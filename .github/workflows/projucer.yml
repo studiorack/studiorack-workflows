@@ -11,6 +11,10 @@ on:
         default: ./build
         required: false
         type: string
+      dir_sdk:
+        default: ./sdk
+        required: false
+        type: string
       dir_source:
         default: ./src/AudioPluginDemo
         required: false
