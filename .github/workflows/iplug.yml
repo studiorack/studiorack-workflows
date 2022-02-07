@@ -84,7 +84,7 @@ jobs:
           cmake \
             -G "${{ matrix.generator }}" \
             -DCMAKE_BUILD_TYPE="${{ inputs.type }}" \
-            -S "${{ inputs.dir_sdk }}" \
+            -S "${{ inputs.dir_source }}" \
             -B "${{ inputs.dir_build }}"
           cmake --build "${{ inputs.dir_build }}" --config "${{ inputs.type }}" --target "${{ inputs.target }}"
 
