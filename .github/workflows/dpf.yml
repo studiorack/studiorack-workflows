@@ -74,7 +74,6 @@ jobs:
 
       - name: Build plugins
         run: |
-          ls ${{ inputs.dir_sdk }}/dgl/src
           cmake \
             -G "${{ matrix.generator }}" \
             -DCMAKE_BUILD_TYPE="${{ inputs.type }}" \
