@@ -75,6 +75,7 @@ jobs:
       - name: Setup
         shell: bash
         run: |
+          cp -v ./src/download-iplug-sdks.sh ${{ inputs.dir_sdk }}/Dependencies/IPlug
           cd ${{ inputs.dir_sdk }}/Dependencies/IPlug &&  ./download-iplug-sdks.sh && cd ../../..
           cd ${{ inputs.dir_sdk }}/Dependencies &&  ./download-prebuilt-libs.sh && cd ../..
 
