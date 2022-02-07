@@ -146,7 +146,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ inputs.release_url }}
-          asset_path: ${{ inputs.dir_build }}/bin/${{ inputs.type }}/validator-${{ matrix.name }}.zip
+          asset_path: ${{ inputs.dir_build }}/bin/validator-${{ matrix.name }}.zip
           asset_name: validator-${{ matrix.name }}.zip
           asset_content_type: application/zip
 
