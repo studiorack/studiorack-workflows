@@ -16,7 +16,7 @@ on:
         required: false
         type: string
       dir_source:
-        default: ./sdk/examples/CairoUI
+        default: ./sdk
         required: false
         type: string
       release_id:
