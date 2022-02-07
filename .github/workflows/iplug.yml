@@ -78,6 +78,7 @@ jobs:
           cp -v ./src/download-iplug-sdks.sh ${{ inputs.dir_sdk }}/Dependencies/IPlug
           cd ${{ inputs.dir_sdk }}/Dependencies/IPlug &&  ./download-iplug-sdks.sh && cd ../../..
           cd ${{ inputs.dir_sdk }}/Dependencies &&  ./download-prebuilt-libs.sh && cd ../..
+          cp -v ${{ inputs.dir_sdk }}/Examples/IPlugInstrument/resources/fonts/Roboto-Regular.ttf ${{ inputs.dir_sdk }}/Examples/IPlugInstrument/resources
 
       - name: Build plugins
         run: |
