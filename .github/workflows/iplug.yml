@@ -15,6 +15,10 @@ on:
         default: ./sdk/Examples/IPlugInstrument
         required: false
         type: string
+      dir_sdk:
+        default: ./sdk
+        required: false
+        type: string
       release_id:
         required: true
         type: string
@@ -71,16 +75,16 @@ jobs:
       - name: Setup
         shell: bash
         run: |
-          cp -v ./src/download-iplug-sdks.sh ${{ inputs.dir_source }}/Dependencies/IPlug
-          cd ${{ inputs.dir_source }}/Dependencies/IPlug &&  ./download-iplug-sdks.sh && cd ../../..
-          cd ${{ inputs.dir_source }}/Dependencies &&  ./download-prebuilt-libs.sh && cd ../..
+          cp -v ./src/download-iplug-sdks.sh ${{ inputs.dir_sdk }}/Dependencies/IPlug
+          cd ${{ inputs.dir_sdk }}/Dependencies/IPlug &&  ./download-iplug-sdks.sh && cd ../../..
+          cd ${{ inputs.dir_sdk }}/Dependencies &&  ./download-prebuilt-libs.sh && cd ../..
 
       - name: Build plugins
         run: |
           cmake \
             -G "${{ matrix.generator }}" \
             -DCMAKE_BUILD_TYPE="${{ inputs.type }}" \
-            -S "${{ inputs.dir_source }}" \
+            -S "${{ inputs.dir_sdk }}" \
             -B "${{ inputs.dir_build }}"
           cmake --build "${{ inputs.dir_build }}" --config "${{ inputs.type }}" --target "${{ inputs.target }}"
 
