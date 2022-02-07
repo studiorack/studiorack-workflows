@@ -12,7 +12,7 @@ on:
         required: false
         type: string
       dir_source:
-        default: ./sdk
+        default: ./sdk/Examples/IPlugInstrument
         required: false
         type: string
       release_id:
@@ -22,7 +22,7 @@ on:
         required: true
         type: string
       target:
-        default: all
+        default: VST3
         required: false
         type: string
       type:
