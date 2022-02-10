@@ -11,7 +11,7 @@ GitHub workflow templates for automated audio plugin builds/releases:
 
 Create a .yml file in your repo at `.github/workflows/release.yml` containing:
 ```
-name: Plugin
+name: Release
 
 on:
   workflow_dispatch:
@@ -24,7 +24,7 @@ jobs:
     name: Create release
     runs-on: ubuntu-latest
     outputs:
-      id: ${{ steps.draft_release.outputs.id }}
+      upload_id: ${{ steps.draft_release.outputs.id }}
       upload_url: ${{ steps.draft_release.outputs.upload_url }}
     steps:
       - name: Draft release
@@ -42,19 +42,19 @@ jobs:
     needs: create_release
     uses: studiorack/studiorack-workflows/.github/workflows/steinberg.yml@main
     with:
-      release_id: ${{ needs.create_release.outputs.id }}
+      release_id: ${{ needs.create_release.outputs.upload_id }}
       release_url: ${{ needs.create_release.outputs.upload_url }}
 
   publish_release:
     name: Publish release
-    needs: build_release
+    needs: [create_release, build_release]
     runs-on: ubuntu-latest
     steps:
     - uses: eregon/publish-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        release_id: ${{ needs.create_release.outputs.id }}
+        release_id: ${{ needs.create_release.outputs.upload_id }}
 ```
 
 Update this line to point to the template you would like to use:
