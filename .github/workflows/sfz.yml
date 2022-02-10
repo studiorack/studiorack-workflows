@@ -92,13 +92,15 @@ jobs:
 
       - name: Create lossy version
         run: |
-          for i in ./${{ inputs.dir_source }}/*.${{ inputs.audio_ext }}; do ffmpeg -i "$i" -b:a ${{ inputs.audio_bitrate }} "${i%.*}.${{ inputs.audio_ext_lossy }}"; done
-          sed -i 's/${{ inputs.audio_ext }}/${{ inputs.audio_ext_lossy }}/g' '${{ github.event.repository.name }}.sfz'
-          find . -name "*.${{ inputs.audio_ext }}" -type f -delete
-          rm ${{ github.event.repository.name }}.zip
+          IFS=$'\n'
+          for file in $(find . -name '*.${{ inputs.audio_ext }}'); do ffmpeg -i "$file" -b:a ${{ inputs.audio_bitrate }} "${file%.*}.${{ inputs.audio_ext_lossy }}"; done
+          find . -name '*.sfz' -exec sed -i -e 's/${{ inputs.audio_ext }}/${{ inputs.audio_ext_lossy }}/g' {} \;
+          find . -name '*.${{ inputs.audio_ext }}' -type f -delete
 
       - name: Compress lossy version
-        run: zip -r ./${{ github.event.repository.name }}-lossy.zip *
+        run: |
+          rm ${{ github.event.repository.name }}.zip
+          zip -r ./${{ github.event.repository.name }}-lossy.zip *
 
       - name: Upload lossy version
         uses: actions/upload-release-asset@v1
