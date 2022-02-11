@@ -93,7 +93,7 @@ jobs:
       - name: Create compact version
         run: |
           IFS=$'\n'
-          for file in $(find . -name '*.${{ inputs.audio_ext }}'); do ffmpeg -i "$file" -b:a ${{ inputs.audio_bitrate }} "${file%.*}.${{ inputs.audio_ext_compact }}"; done
+          for file in $(find . -type f -name '*.${{ inputs.audio_ext }}'); do ffmpeg -i "$file" -b:a ${{ inputs.audio_bitrate }} "${file%.*}.${{ inputs.audio_ext_compact }}"; done
           find . -type f -name '*.sfz' -o -name '*.txt' -exec sed -i -e 's/${{ inputs.audio_ext }}/${{ inputs.audio_ext_compact }}/g' {} \;
           find . -type f -name '*.${{ inputs.audio_ext }}' -type f -delete
 
