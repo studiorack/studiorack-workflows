@@ -57,7 +57,41 @@ jobs:
     steps:
       - name: Install Linux dependencies
         if: matrix.os == 'ubuntu-latest'
-        run: sudo apt install ninja-build cmake
+        run: |
+          sudo apt update && sudo apt upgrade && sudo apt install
+          build-essential gperf ninja-build cmake
+          libgl1-mesa-dev
+          libfontconfig1-dev
+          libfreetype6-dev
+          libx11-dev
+          libx11-xcb-dev
+          libxcb-damage0-dev
+          libxcb-dpms0-dev
+          libxcb-glx0-dev
+          libxcb-icccm4-dev
+          libxcb-image0-dev
+          libxcb-keysyms1-dev
+          libxcb-present-dev
+          libxcb-randr0-dev
+          libxcb-record0-dev
+          libxcb-render-util0-dev
+          libxcb-render0-dev
+          libxcb-res0-dev
+          libxcb-shape0-dev
+          libxcb-shm0-dev
+          libxcb-sync-dev
+          libxcb-util-dev
+          libxcb-xfixes0-dev
+          libxcb-xinerama0-dev
+          libxcb-xkb-dev
+          libxcb1-dev
+          libxext-dev
+          libxfixes-dev
+          libxi-dev
+          libxkbcommon-dev
+          libxkbcommon-x11-dev
+          libxrender-dev
+          libatspi2.0-dev
 
       - name: Install macOS dependencies
         if: matrix.os == 'macos-latest'
@@ -85,11 +119,11 @@ jobs:
       - name: List files
         run: ls "${{ matrix.path }}"
 
-      # - name: Metadata
-      #   run: |
-      #     npm install @studiorack/cli -g
-      #     cp -v ./src/assets/* "${{ matrix.path }}"
-      #     studiorack validate "${{ matrix.path }}/**/*.{vst,vst3}" --files --json --txt --zip --summary
+      - name: Metadata
+        run: |
+          npm install @studiorack/cli -g
+          cp -v ./src/assets/* "${{ matrix.path }}"
+          studiorack validate "${{ matrix.path }}/**/*.{clap}" --files --json --txt --zip --summary
 
       - name: Upload
         uses: actions/github-script@v3
