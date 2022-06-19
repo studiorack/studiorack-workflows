@@ -45,15 +45,15 @@ jobs:
           - os: ubuntu-latest
             name: linux
             generator: Ninja Multi-Config
-            path: ${{ inputs.dir_build }}/plugins/${{ inputs.type }}
+            path: ${{ inputs.dir_build }}/${{ inputs.type }}
           - os: macos-latest
             name: mac
             generator: Ninja Multi-Config
-            path: ${{ inputs.dir_build }}/plugins/${{ inputs.type }}
+            path: ${{ inputs.dir_build }}/${{ inputs.type }}
           - os: windows-latest
             name: win
             generator: Ninja Multi-Config
-            path: ${{ inputs.dir_build }}/plugins/${{ inputs.type }}
+            path: ${{ inputs.dir_build }}/${{ inputs.type }}
     steps:
       - name: Install Linux dependencies
         if: matrix.os == 'ubuntu-latest'
