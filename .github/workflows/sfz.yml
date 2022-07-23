@@ -33,6 +33,10 @@ on:
         default: jpg
         required: false
         type: string
+      file_name:
+        default: ${{ github.event.repository.name }}
+        required: false
+        type: string
 
 jobs:
   sfz:
@@ -60,8 +64,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ inputs.release_url }}
-          asset_path: ./${{ github.event.repository.name }}.${{ inputs.audio_ext }}
-          asset_name: ${{ github.event.repository.name }}.${{ inputs.audio_ext }}
+          asset_path: ./${{ inputs.file_name }}.${{ inputs.audio_ext }}
+          asset_name: ${{ inputs.file_name }}.${{ inputs.audio_ext }}
           asset_content_type: audio/${{ inputs.audio_ext }}
 
       - name: Upload image preview
@@ -70,12 +74,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ inputs.release_url }}
-          asset_path: ./${{ github.event.repository.name }}.${{ inputs.image_ext }}
-          asset_name: ${{ github.event.repository.name }}.${{ inputs.image_ext }}
+          asset_path: ./${{ inputs.file_name }}.${{ inputs.image_ext }}
+          asset_name: ${{ inputs.file_name }}.${{ inputs.image_ext }}
           asset_content_type: image/${{ inputs.image_ext }}
 
       - name: Compress lossless version
-        run: zip -r ./${{ github.event.repository.name }}.zip *
+        run: zip -r ./${{ inputs.file_name }}.zip *
 
       - name: Upload lossless version
         uses: actions/upload-release-asset@v1
@@ -83,8 +87,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ inputs.release_url }}
-          asset_path: ./${{ github.event.repository.name }}.zip
-          asset_name: ${{ github.event.repository.name }}.zip
+          asset_path: ./${{ inputs.file_name }}.zip
+          asset_name: ${{ inputs.file_name }}.zip
           asset_content_type: application/zip
 
       - name: Install ffmpeg
@@ -99,8 +103,8 @@ jobs:
 
       - name: Compress compact version
         run: |
-          rm ${{ github.event.repository.name }}.zip
-          zip -r ./${{ github.event.repository.name }}-compact.zip *
+          rm ${{ inputs.file_name }}.zip
+          zip -r ./${{ inputs.file_name }}-compact.zip *
 
       - name: Upload compact version
         uses: actions/upload-release-asset@v1
@@ -108,6 +112,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ inputs.release_url }}
-          asset_path: ./${{ github.event.repository.name }}-compact.zip
-          asset_name: ${{ github.event.repository.name }}-compact.zip
+          asset_path: ./${{ inputs.file_name }}-compact.zip
+          asset_name: ${{ inputs.file_name }}-compact.zip
           asset_content_type: application/zip
