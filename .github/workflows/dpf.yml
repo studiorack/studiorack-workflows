@@ -81,6 +81,9 @@ jobs:
             -B "${{ inputs.dir_build }}"
           cmake --build "${{ inputs.dir_build }}" --config "${{ inputs.type }}"
 
+      - name: List errors
+        run: cat "${{ inputs.dir_build }}/CMakeFiles/CMakeError.log"
+
       - name: List files
         run: ls "${{ matrix.path }}"
 
