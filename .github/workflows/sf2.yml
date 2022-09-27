@@ -67,7 +67,7 @@ jobs:
           asset_content_type: image/${{ inputs.image_ext }}
 
       - name: Compress lossless version
-        run: zip -r ./${{ inputs.file_name }}.zip *
+        run: 7z a ./${{ inputs.file_name }}.zip -r
 
       - name: Upload lossless version
         uses: actions/upload-release-asset@v1
@@ -91,7 +91,7 @@ jobs:
       - name: Compress compact version
         run: |
           rm ${{ inputs.file_name }}.zip
-          zip -r ./${{ inputs.file_name }}-compact.zip *
+          7z a ./${{ inputs.file_name }}-compact.zip -r
 
       - name: Upload compact version
         uses: actions/upload-release-asset@v1
