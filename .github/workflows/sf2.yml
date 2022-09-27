@@ -82,6 +82,13 @@ jobs:
       - name: Install polyphone
         run: sudo apt-get update && sudo apt-get install polyphone
 
+      # Polyphone can be run with a command line to convert soundfonts in the format sf2, sf3 or sfz.
+      # Supported file formats for the conversion are sf2, sf3, sfz and sfArk.
+      # Mode “1” is “convert to sf2” - sf2 comprises one or more musical virtual instruments, made of audio samples and parameters
+      # Mode “2” is “convert to sf3” - sf3 is similar to the sf2 format except that samples are in the lossy OGG format (10x smaller filesize)
+      # Mode “3” is “convert to sfz” - sfz format is a text file which is editable by a human, combined with a set of samples.
+      # https://www.polyphone-soundfonts.com/documentation/en/manual/annexes/command-line
+
       - name: Create compact version
         run: |
           IFS=$'\n'
