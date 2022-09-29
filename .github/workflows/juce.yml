@@ -40,7 +40,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-latest, macos-latest, windows-2019]
         include:
           - os: ubuntu-latest
             name: linux
@@ -50,7 +50,7 @@ jobs:
             name: mac
             generator: Xcode
             path: ${{ inputs.dir_build }}/examples/CMake/AudioPlugin/AudioPluginExample_artefacts/${{ inputs.type }}/VST3
-          - os: windows-latest
+          - os: windows-2019
             name: win
             generator: Visual Studio 16 2019
             path: ${{ inputs.dir_build }}/examples/CMake/AudioPlugin/AudioPluginExample_artefacts/${{ inputs.type }}/VST3/Audio Plugin Example.vst3/Contents/x86_64-win
@@ -64,7 +64,7 @@ jobs:
       #   run: brew install zip
 
       # - name: Install Windows dependencies
-      #   if: matrix.os == 'windows-latest'
+      #   if: matrix.os == 'windows-2019'
       #   run: choco install zip
 
       - name: Checkout code

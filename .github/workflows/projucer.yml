@@ -44,7 +44,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-latest, macos-latest, windows-2019]
         include:
           - os: ubuntu-latest
             name: linux
@@ -60,7 +60,7 @@ jobs:
             path: ${{ inputs.dir_source }}/Builds/MacOSX/build/Release
             projucer_bin: ./JUCE/Projucer.app/Contents/MacOS/Projucer
             projucer_type: osx
-          - os: windows-latest
+          - os: windows-2019
             name: win
             generator: Visual Studio 16 2019
             source: ${{ inputs.dir_source }}/Builds/VisualStudio2017
@@ -77,7 +77,7 @@ jobs:
       #   run: brew install zip
 
       - name: Install Windows dependencies
-        if: matrix.os == 'windows-latest'
+        if: matrix.os == 'windows-2019'
         uses: microsoft/setup-msbuild@v1.0.2
 
       - name: Checkout code
@@ -103,7 +103,7 @@ jobs:
         run: xcodebuild ARCHS=x86_64 -project ${{ inputs.file_name }}.xcodeproj -configuration "${{ inputs.type }}" -jobs 4
 
       - name: Build Windows plugin (Projucer)
-        if: matrix.os == 'windows-latest'
+        if: matrix.os == 'windows-2019'
         working-directory: ${{ matrix.source }}
         run: msbuild.exe -v:normal ${{ inputs.file_name }}.sln
 
