@@ -132,13 +132,13 @@ jobs:
                 }
               }
             }
-      # - name: Upload metadata
-      #   if: matrix.os == 'macos-latest'
-      #   uses: actions/upload-release-asset@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     upload_url: ${{ inputs.release_url }}
-      #     asset_path: ${{ matrix.path }}/plugins.json
-      #     asset_name: plugins.json
-      #     asset_content_type: application/json
+      - name: Upload metadata
+        if: matrix.os == 'macos-latest'
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ inputs.release_url }}
+          asset_path: ${{ matrix.path }}/plugins.json
+          asset_name: plugins.json
+          asset_content_type: application/json
