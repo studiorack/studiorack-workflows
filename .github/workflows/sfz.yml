@@ -44,7 +44,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: recursive
 
@@ -97,9 +97,9 @@ jobs:
       - name: Create compact version
         run: |
           IFS=$'\n'
-          for file in $(find . -type f -name '*.${{ inputs.audio_ext }}'); do ffmpeg -i "$file" -b:a ${{ inputs.audio_bitrate }} "${file%.*}.${{ inputs.audio_ext_compact }}"; done
-          find . -type f \( -iname \*.sfz -o -iname \*.txt \) -exec sed -i -e 's/${{ inputs.audio_ext }}/${{ inputs.audio_ext_compact }}/g' {} \;
-          find . -type f -name '*.${{ inputs.audio_ext }}' -type f -delete
+          for file in $(find . -type f -name '*.wav'); do ffmpeg -i "$file" -map_metadata 0:s:0 "${file%.*}.flac"; done
+          find . -type f \( -iname \*.sfz -o -iname \*.txt \) -exec sed -i '' 's/wav/flac/g' {} \;
+          find . -type f -name '*.wav' -type f -delete
 
       - name: Compress compact version
         run: |
